@@ -1,7 +1,8 @@
 class Ray {
     constructor(pos, angle) {
         this.originPos = pos;
-        this.dir = p5.Vector.fromAngle(angle);
+        this.dir = p5.Vector.fromAngle(radians(angle));
+        this.targetPos = createVector(this.originPos.x, this.originPos.y);
     }
 
     lineTrace(bound) {      
@@ -39,11 +40,12 @@ class Ray {
         return;
     }
 
+    setTargetPos(x, y) {
+        this.targetPos = createVector(x, y);
+    }
+
     drawComponent() {
-        stroke(255);
-        push();
-        translate(this.originPos.x, this.originPos.y);
-        line(0, 0, dir.x, dir.y);
-        pop();
+        stroke(255, 100);
+        line(this.originPos.x, this.originPos.y, this.targetPos.x, this.targetPos.y);
     }
 }
