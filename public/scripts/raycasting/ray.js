@@ -15,13 +15,14 @@ class Ray {
         const y3 = bound.y1;
 
         if(bound instanceof Wall) {
+            console.log("wall");
             const x4 = bound.x2;
             const y4 = bound.y2;
 
             const d = (x3 - x4) * (y1 - y2) - (x1 - x2) * (y3 - y4);
 
             if(d == 0) {
-                return;
+                return false;
             }
 
             const t = ((x3 - x1) * (y1 - y2) - (y3 - y1) * (x1 - x2)) / d;
@@ -37,11 +38,45 @@ class Ray {
             }
         }
 
-        return;
+        if(bound instanceof Sphere) {
+            const l = p5.Vector.sub(createVector(bound.x1, bound.y1), this.originPos);
+            const tca = l.dot(this.dir);
+            const d2 = l.dot(l) - tca * tca;
+            const radius2 = bound.r * bound.r;
+            
+            if (d2 > radius2) {
+                return false;
+            }
+            
+            const thc = Math.sqrt(radius2 - d2);
+            let t0 = tca - thc;
+            let t1 = tca + thc;
+
+            console.log(t0 + " - " + t1);
+
+            if(t0 > t1) {
+                let temp = t0;
+                t0 = t1;
+                t1 = temp;
+            }
+
+            if(t0 < 0) {
+                t0 = t1;
+                if (t0 < 0) {
+                    return false;
+                }
+            }
+
+            let hitPt = p5.Vector.mult(this.dir, t0);
+            hitPt.add(this.originPos);
+            return hitPt; 
+        }
     }
 
     setTargetPos(x, y) {
         this.targetPos = createVector(x, y);
+        this.dir = p5.Vector.sub(this.originPos, this.targetPos);
+        this.dir.normalize();
     }
 
     drawComponent() {
