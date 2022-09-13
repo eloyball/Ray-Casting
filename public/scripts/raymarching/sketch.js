@@ -5,14 +5,14 @@ function setup() {
   genRandWalls(3);
   //genTiltedMaze(150);
   genCircles(6);
-  emitter = new RCEmitter(createVector(width/2, height/2), 90);
+  emitter = new RMEmitter(createVector(width/2, height/2), 0);
 }
 
 function draw() {
   background(12);
 
   renderBoundaries();
-  emitter.rayTrace();
+  emitter.rayMarch(100);
 }
 
 // ==================== Mouse Action Mapping ====================
