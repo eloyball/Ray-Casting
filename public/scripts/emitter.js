@@ -88,7 +88,10 @@ class RMEmitter extends Emitter {
             
             this.rays[i].drawComponent(Math.abs(minDist));
         }
+    }
 
-        console.log(this.rays.length);
+    drawComponent() {
+        stroke(255);
+        circle(this.pos.x, this.pos.y, 20);
     }
 }

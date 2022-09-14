@@ -13,14 +13,35 @@ function draw() {
 
   renderBoundaries();
   emitter.rayMarch(100);
+  emitter.drawComponent();
 }
 
 // ==================== Mouse Action Mapping ====================
 
+let locked = false;
+
 function mousePressed() {
-  emitter.updatePos(mouseX, mouseY);
+  const lockRadius = 20;
+  if(
+    mouseX < (emitter.pos.x + lockRadius) &&
+    mouseX > (emitter.pos.x - lockRadius) &&
+    mouseY < (emitter.pos.y + lockRadius) &&
+    mouseY > (emitter.pos.y - lockRadius) ) {
+      locked = true;
+    } else {
+      locked = false;
+      emitter.angle = (-1) * ((degrees(atan2(mouseX - emitter.pos.x, mouseY - emitter.pos.y))) - 90);
+    }
 }
 
 function mouseDragged() {
-  emitter.updatePos(mouseX, mouseY);
+  if(locked) {
+    emitter.updatePos(mouseX, mouseY);
+  } else {
+    emitter.angle = (-1) * ((degrees(atan2(mouseX - emitter.pos.x, mouseY - emitter.pos.y))) - 90);
+  }
+}
+
+function mouseReleased() {
+  locked = false;
 }
